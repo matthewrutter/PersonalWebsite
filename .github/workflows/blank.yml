@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Compress project files
-        run: tar -czf project.tar.gz -C src .
+        run: tar -czf website.tar.gz website
 
       - name: Transfer files to remote server
         env:
@@ -40,7 +40,22 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p 7822 $SSH_HOST >> ~/.ssh/known_hosts
-          scp -P 7822 project.tar.gz $SSH_USERNAME@$SSH_HOST:$STAGING_DIR
+          scp -P 7822 website.tar.gz $SSH_USERNAME@$SSH_HOST:staging_html
+
+      - name: Decompress, move, and cleanup on remote server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          STAGING_DIR: ${{ secrets.STAGING_DIR }}
+          PROD_DIR: ${{ secrets.PROD_DIR }}
+        run: |
+          ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
+            cd /staging_html &&
+            tar -xzf website.tar.gz &&
+            mv -f website/* ./ &&
+            rm -rf website website.tar.gz
+          "
 
       - name: Cleanup Artifacts
-        run: rm -f project.tar.gz
+        run: rm -f website.tar.gz
