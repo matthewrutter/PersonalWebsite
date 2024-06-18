@@ -51,7 +51,7 @@ jobs:
           PROD_DIR: ${{ secrets.PROD_DIR }}
         run: |
           ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
-            cd staging_html &&
+            cd $STAGING_DIR &&
             # Remove all files and directories except .tar.gz files using rm and wildcards
             shopt -s extglob
             rm -rf ./!(*.tar.gz)
