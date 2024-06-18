@@ -57,8 +57,8 @@ jobs:
             rm -rf ./!(*.tar.gz)
             # Decompress .tar.gz
             tar -xzf website.tar.gz -C ./ &&
-            # Remove all .tar.gz files
-            rm -f ./*.tar.gz
+            mv -f website/* ./ &&
+            rm -rf website website.tar.gz
           "
 
       - name: Cleanup Artifacts
