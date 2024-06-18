@@ -53,7 +53,7 @@ jobs:
           ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
             cd staging_html &&
             tar -xzf website.tar.gz &&
-            rsync -av --delete --ignore-missing-args website/ ./ &&
+            rsync -av --delete-during --delay-updates temp_website/website/ ./ &&
             rm -rf website website.tar.gz
           "
 
