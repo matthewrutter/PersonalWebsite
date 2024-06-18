@@ -34,3 +34,16 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      # Create .ssh directory, create SSH key file, add SSH key, and execute SSH command
+      - name: Setup SSH and Execute Command
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 7822 $SSH_HOST >> ~/.ssh/known_hosts
+          ssh -p 7822 $SSH_USERNAME@$SSH_HOST "touch newtestfile.txt"
