@@ -1,0 +1,18 @@
+<IfModule mod_brotli.c>
+    # This module is for on-the-fly compression, no changes needed here for pre-compressed files
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss image/svg+xml
+</IfModule>
+
+<IfModule mod_mime.c>
+    # Tell Apache to recognize .br files as pre-compressed and set their MIME types
+    AddType text/css .css.br
+    AddEncoding br .br
+</IfModule>
+
+<FilesMatch "\.css\.br$">
+    # Serve .br files when they are directly requested
+    ForceType text/css
+    Header set Content-Encoding br
+    Header unset ETag
+    Header set Cache-Control "max-age=29030400, public"
+</FilesMatch>
