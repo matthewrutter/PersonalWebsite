@@ -41,15 +41,31 @@ jobs:
           ssh-keyscan -p 7822 $SSH_HOST >> ~/.ssh/known_hosts
           scp -P 7822 website.tar.gz $SSH_USERNAME@$SSH_HOST:$STAGING_DIR
 
-      - name: Decompress, move, and cleanup on remote server
+      - name: Decompress, move, and cleanup on Staging
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           STAGING_DIR: ${{ secrets.STAGING_DIR }}
         run: |
           ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
             cd $STAGING_DIR &&
+            # Remove all the files and directories except .tar.gz files using rm and wildcards
+            shopt -s extglob
+            rm -rf ./!(*.tar.gz)
+            # Decompress .tar.gz
+            tar -xzf website.tar.gz -C ./ &&
+            mv -f website/* ./ &&
+            rm -rf website website.tar.gz
+          "
+
+      - name: Decompress, move, and cleanup on Production
+        env:
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          PROD_DIR: ${{ secrets.PROD_DIR }}
+        run: |
+          ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
+            cd $PROD_DIR &&
             # Remove all the files and directories except .tar.gz files using rm and wildcards
             shopt -s extglob
             rm -rf ./!(*.tar.gz)
