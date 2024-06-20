@@ -6,19 +6,84 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <!-- Preload critical resources -->
     <link rel="preload" href="./img/background.jpeg" as="image">
+    <link rel="preload" href="css/bootstrap.min.css" as="style">
+    <link rel="preload" href="font-awesome/css/font-awesome.min.css" as="style">
 
     <link rel="canonical" href="//mattrutter.dev" itemprop="url">
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="css/landing-page.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Inline Critical CSS -->
+    <style>
+      body,
+      html {
+          width: 100%;
+          height: 100%;
+      }
+
+      body,
+      h1 {
+          font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+          font-weight: 700;
+      }
+
+      .intro-header {
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          color: #f8f8f8;
+          background: url(./img/background.jpeg) no-repeat center center;
+          background-size: cover;
+      }
+
+      .intro-message {
+          position: relative;
+          padding-top: 20%;
+          padding-bottom: 20%;
+      }
+
+      .intro-message > h1 {
+          margin: 0;
+          text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+          font-size: 5em;
+      }
+
+      .intro-divider {
+          width: 80%;
+          border-top: 1px solid #f8f8f8;
+          border-bottom: 1px solid rgba(0,0,0,0.2);
+      }
+
+      @media(max-width:767px) {
+          .intro-message {
+              padding-bottom: 15%;
+          }
+
+          .intro-message > h1 {
+              font-size: 3em;
+          }
+
+          .intro-divider {
+              width: 100%;
+          }
+      }
+
+      a.email-address {
+          color: #FFFFFF;
+          text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+      }
+
+      a.email-address:hover {
+          color: #FFFFFF;
+      }
+    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,29 +93,15 @@
     <![endif]-->
 </head>
 
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-TDDNZLCLFL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-TDDNZLCLFL');
-</script> -->
-
 <body>
     <div class="intro-header">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-message">
-                        
-                        <h1 id="hdrDescription">This website is under constructions!</h1>
-                        
+                        <h1 id="hdrDescription">This website is under construction!</h1>
                         <hr class="intro-divider">
-                        
-                        <h2> <a class="email-address" id="lnkEmailAddress" href="mailto:dev%40mattrutter.dev">dev@mattrutter.dev</a></h2>
-                        
+                        <h2><a class="email-address" id="lnkEmailAddress" href="mailto:dev%40mattrutter.dev">dev@mattrutter.dev</a></h2>
                     </div>
                 </div>
             </div>
@@ -59,29 +110,12 @@
     </div>
     <!-- /.intro-header -->
 
+    <!-- JavaScript at the end for faster page load -->
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script defer src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    
-    <!-- <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'G-TDDNZLCLFL']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
-     -->
+    <script defer src="js/bootstrap.min.js"></script>
 </body>
 
 </html>
