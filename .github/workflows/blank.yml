@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Compress project files
-        run: tar -czf website.tar.gz website
+        run: tar -czf www.tar.gz www
 
       - name: Setup ssh for server transfers
         env:
@@ -46,35 +46,35 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           STAGING_DIR: ${{ secrets.STAGING_DIR }}
         run: |
-          scp -P 7822 website.tar.gz $SSH_USERNAME@$SSH_HOST:$STAGING_DIR
+          scp -P 7822 www.tar.gz $SSH_USERNAME@$SSH_HOST:$STAGING_DIR
           ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
             cd $STAGING_DIR &&
             # Remove all the files and directories except .tar.gz files using rm and wildcards
             shopt -s extglob
             rm -rf ./!(*.tar.gz)
             # Decompress .tar.gz
-            tar -xzf website.tar.gz -C ./ &&
-            mv -f website/* ./ &&
-            rm -rf website website.tar.gz
+            tar -xzf www.tar.gz -C ./ &&
+            mv -f www/* ./ &&
+            rm -rf www www.tar.gz
           "
-          
+
       - name: Transfer, decompress, move, and cleanup on Production
         env:
           SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           PROD_DIR: ${{ secrets.PROD_DIR }}
         run: |
-          scp -P 7822 website.tar.gz $SSH_USERNAME@$SSH_HOST:$PROD_DIR
+          scp -P 7822 www.tar.gz $SSH_USERNAME@$SSH_HOST:$PROD_DIR
           ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
             cd $PROD_DIR &&
             # Remove all the files and directories except .tar.gz files using rm and wildcards
             shopt -s extglob
             rm -rf ./!(*.tar.gz)
             # Decompress .tar.gz
-            tar -xzf website.tar.gz -C ./ &&
-            mv -f website/* ./ &&
-            rm -rf website website.tar.gz
+            tar -xzf www.tar.gz -C ./ &&
+            mv -f www/* ./ &&
+            rm -rf www www.tar.gz
           "
 
       - name: Cleanup Artifacts
-        run: rm -f website.tar.gz
+        run: rm -f www.tar.gz
