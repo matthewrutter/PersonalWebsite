@@ -48,7 +48,7 @@ jobs:
           STAGING_DIR: ${{ secrets.STAGING_DIR }}
         run: |
           # Clone the repository from the remote server
-          git clone ssh://$SSH_USERNAME@$SSH_HOST:7822/home/mattrutt/public_html /tmp/repo
+          git clone ssh://$SSH_USERNAME@$SSH_HOST:7822/home/mattrutt/staging_html /tmp/repo
           cd /tmp/repo
 
           # Set up Git user details (for the commit)
