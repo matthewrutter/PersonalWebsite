@@ -47,30 +47,17 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           STAGING_DIR: ${{ secrets.STAGING_DIR }}
         run: |
-          # Clone the repository from the remote server
-          git clone ssh://$SSH_USERNAME@$SSH_HOST:7822/home/mattrutt/staging_html /tmp/repo
-          cd /tmp/repo
-
-          # Set up Git user details (for the commit)
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-
-          # Add a test file
-          echo "This is a test file" > test-file.txt
-
-          # Stage the test file for commit
-          git add .
-
-          # Get the commit hash and timestamp from the GitHub commit
-          GITHUB_COMMIT_HASH=${{ github.sha }}
-          COMMITTER_NAME=${{ github.actor }}
-          TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
-
-          # Commit with the commit hash and timestamp
-          git commit -m "Commit from GitHub by $COMMITTER_NAME: $GITHUB_COMMIT_HASH at $TIMESTAMP"
-
-          # Push the changes back to the remote server
-          git push origin master
+          scp -P 7822 www.tar.gz $SSH_USERNAME@$SSH_HOST:$STAGING_DIR
+          ssh -p 7822 $SSH_USERNAME@$SSH_HOST "
+            cd $STAGING_DIR &&
+            # Remove all the files and directories except .tar.gz files using rm and wildcards
+            shopt -s extglob
+            rm -rf ./!(*.tar.gz)
+            # Decompress .tar.gz
+            tar -xzf www.tar.gz -C ./ &&
+            mv -f www/* ./ &&
+            rm -rf www www.tar.gz
+          "
 
       - name: Transfer, decompress, move, compress, and cleanup on Production
         if: startsWith(github.ref, 'refs/tags/')  # This condition ensures this step runs only for tags
